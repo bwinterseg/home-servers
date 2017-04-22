@@ -1,0 +1,97 @@
+version: "2"
+
+services:
+  openvpn-as:
+    image: linuxserver/openvpn-as
+    container_name: openvpn-as
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/openvpn-as:/config
+    env_file: /mnt/dockerConfigs/envs/linuxserver_media.env
+    network_mode: "host"
+    privileged: true
+    environment:
+      - INTERFACE=eno16777984
+      - LOCAL_NETWORK=10.0.0.0/24
+  nzbget:
+    image: linuxserver/nzbget:latest
+    container_name: nzbget
+    restart: always
+    volumes:
+      - /appdata/nzbget:/config
+      - /appdata/nzbget/scripts:/config/scripts
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/downloads:/downloads
+      - /tmp/nzbget:/downloads/tmp
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "6789:6789"
+  nzbhydra:
+    image: linuxserver/hydra:latest
+    container_name: nzbhydra
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/nzbhydra:/config
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "5075:5075"
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: always
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/sonarr:/config
+      - /mnt/downloads:/downloads
+      - /mnt/tvshows:/tvshows
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "8989:8989"
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    restart: always
+    volumes:
+      - /dev/rtc:/dev/rtc:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/radarr:/config
+      - /mnt/downloads:/downloads
+      - /mnt/movies:/movies
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "7878:7878"
+  couchpotato:
+    image: linuxserver/couchpotato:latest
+    container_name: couchpotato
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/couchpotato:/config
+      - /mnt/downloads:/downloads
+      - /mnt/movies:/movies
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "5050:5050"
+  plexrequests:
+    image: linuxserver/plexrequests
+    container_name: plexrequests
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/plexrequests:/config
+    env_file: /mnt/dockerConfigs/envs/linuxserver.env
+    ports:
+      - "3000:3000"
+  muximux:
+    image: linuxserver/muximux
+    container_name: muximux
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /appdata/muximux:/config
+    env_file: /mnt/dockerConfigs/envs/linuxserver_media.env
+    ports:
+      - "80:80"
