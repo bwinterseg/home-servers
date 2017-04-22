@@ -1,19 +1,6 @@
 version: "2"
 
 services:
-  openvpn-as:
-    image: linuxserver/openvpn-as
-    container_name: openvpn-as
-    restart: always
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /appdata/openvpn-as:/config
-    env_file: /mnt/dockerConfigs/envs/linuxserver_media.env
-    network_mode: "host"
-    privileged: true
-    environment:
-      - INTERFACE=eno16777984
-      - LOCAL_NETWORK=10.0.0.0/24
   nzbget:
     image: linuxserver/nzbget:latest
     container_name: nzbget
@@ -63,18 +50,6 @@ services:
     env_file: /mnt/dockerConfigs/envs/linuxserver.env
     ports:
       - "7878:7878"
-  couchpotato:
-    image: linuxserver/couchpotato:latest
-    container_name: couchpotato
-    restart: always
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /appdata/couchpotato:/config
-      - /mnt/downloads:/downloads
-      - /mnt/movies:/movies
-    env_file: /mnt/dockerConfigs/envs/linuxserver.env
-    ports:
-      - "5050:5050"
   plexrequests:
     image: linuxserver/plexrequests
     container_name: plexrequests
